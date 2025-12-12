@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
- * POST Request Test Sınıfı
+ * POST istek Test Sınıfı
  * JSONPlaceholder API'sini kullanarak POST istekleri test edilir.
  * 
  * Test Senaryoları:
@@ -28,21 +28,21 @@ public class PostRequestTest {
     // Base URL - JSONPlaceholder (ücretsiz test API'si)
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
     
-    // Maksimum kabul edilebilir response time (milisaniye)
+    // Maksimum response time (milisaniye)
     private static final long MAX_RESPONSE_TIME = 3000; // 3 saniye
 
     @BeforeClass
     public static void setup() {
-        // RestAssured base URI ayarlanır
+        
         RestAssured.baseURI = BASE_URL;
         
-        // Logging ayarları (isteğe bağlı - debug için)
+        
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     /**
      * Test 1: Yeni post oluştur (POST /posts)
-     * - Status code: 201 Created (veya 200 OK - API'ye göre değişir)
+     * - Status code: 201 Created 
      * - Request body: JSON formatında post verisi
      * - Response body: Oluşturulan post bilgileri kontrol edilir
      * - Response time: 3 saniye altında olmalı
@@ -57,7 +57,7 @@ public class PostRequestTest {
 
         Response response = given()
                 .contentType(ContentType.JSON) // Content-Type: application/json
-                .body(postData) // Request body
+                .body(postData) 
                 .when()
                 .post("/posts")
                 .then()
@@ -66,14 +66,14 @@ public class PostRequestTest {
                 // Response time kontrolü
                 .time(lessThan(MAX_RESPONSE_TIME))
                 // Response body kontrolleri
-                .body("id", is(notNullValue())) // Yeni oluşturulan post'un ID'si olmalı
-                .body("title", equalTo(postData.get("title"))) // Title eşleşmeli
-                .body("body", equalTo(postData.get("body"))) // Body eşleşmeli
-                .body("userId", equalTo(postData.get("userId"))) // UserId eşleşmeli
+                .body("id", is(notNullValue())) 
+                .body("title", equalTo(postData.get("title"))) 
+                .body("body", equalTo(postData.get("body"))) 
+                .body("userId", equalTo(postData.get("userId"))) 
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         int createdPostId = response.jsonPath().getInt("id");
         String responseTitle = response.jsonPath().getString("title");
         String responseBody = response.jsonPath().getString("body");
@@ -109,15 +109,15 @@ public class PostRequestTest {
 
         Response response = given()
                 .contentType(ContentType.JSON)
-                .body(jsonBody) // String JSON body
+                .body(jsonBody) 
                 .when()
                 .post("/posts")
                 .then()
-                // Status code kontrolü
+                
                 .statusCode(201)
-                // Response time kontrolü
+            
                 .time(lessThan(MAX_RESPONSE_TIME))
-                // Response body kontrolleri
+                
                 .body("id", is(notNullValue()))
                 .body("title", is(notNullValue()))
                 .body("body", is(notNullValue()))
@@ -126,7 +126,7 @@ public class PostRequestTest {
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         assertNotNull("Response boş olamaz", response);
         assertEquals("Content-Type JSON olmalı", 
                 "application/json; charset=utf-8", 
@@ -163,11 +163,11 @@ public class PostRequestTest {
                 .when()
                 .post("/comments")
                 .then()
-                // Status code kontrolü
+                
                 .statusCode(201)
-                // Response time kontrolü
+                
                 .time(lessThan(MAX_RESPONSE_TIME))
-                // Response body kontrolleri
+                
                 .body("id", is(notNullValue()))
                 .body("postId", equalTo(commentData.get("postId")))
                 .body("name", equalTo(commentData.get("name")))
@@ -177,7 +177,7 @@ public class PostRequestTest {
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         int commentId = response.jsonPath().getInt("id");
         String email = response.jsonPath().getString("email");
         
