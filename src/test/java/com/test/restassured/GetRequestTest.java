@@ -16,11 +16,11 @@ import static org.junit.Assert.*;
  * Test Senaryoları:
  * - Status code kontrolü
  * - Response body içerisinde beklenen değer kontrolleri
- * - Response time kontrolü (belirli süre altında)
+ * - Response time kontrolü (belirli süre altında) 3000ms 
  */
 public class GetRequestTest {
 
-    // Base URL - JSONPlaceholder (ücretsiz test API'si)
+    // Base URL(test edilecek servis url'si) - JSONPlaceholder (hazır çekilmiş api)
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
     
     // Maksimum kabul edilebilir response time (milisaniye)
@@ -31,7 +31,7 @@ public class GetRequestTest {
         // RestAssured base URI ayarlanır
         RestAssured.baseURI = BASE_URL;
         
-        // Logging ayarları (isteğe bağlı - debug için)
+    
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
@@ -66,7 +66,7 @@ public class GetRequestTest {
                 "application/json; charset=utf-8", 
                 response.getContentType());
         
-        // Response body'den spesifik değer kontrolü
+        
         int firstPostId = response.jsonPath().getInt("[0].id");
         assertTrue("İlk post ID'si pozitif olmalı", firstPostId > 0);
         
@@ -91,11 +91,10 @@ public class GetRequestTest {
                 .when()
                 .get("/posts/{id}")
                 .then()
-                // Status code kontrolü
                 .statusCode(200)
-                // Response time kontrolü
+
                 .time(lessThan(MAX_RESPONSE_TIME))
-                // Response body kontrolleri
+                // body kontrolleri
                 .body("id", equalTo(postId)) // ID eşleşmeli
                 .body("userId", is(notNullValue())) // userId olmalı
                 .body("title", is(notNullValue())) // title olmalı
@@ -105,7 +104,7 @@ public class GetRequestTest {
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         String title = response.jsonPath().getString("title");
         int userId = response.jsonPath().getInt("userId");
         
@@ -128,25 +127,25 @@ public class GetRequestTest {
      */
     @Test
     public void testGetPostsByUserId() {
-        int userId = 1; // Test için userId 1 kullanılıyor
+        int userId = 1; 
         
         Response response = given()
                 .queryParam("userId", userId)
                 .when()
                 .get("/posts")
                 .then()
-                // Status code kontrolü
+                
                 .statusCode(200)
-                // Response time kontrolü
+                
                 .time(lessThan(MAX_RESPONSE_TIME))
-                // Response body kontrolleri
+            
                 .body("$", is(notNullValue())) // Response boş olmamalı
                 .body("size()", greaterThan(0)) // En az bir post olmalı
                 .body("userId", everyItem(equalTo(userId))) // Tüm postların userId'si eşleşmeli
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         int postCount = response.jsonPath().getList("$").size();
         assertTrue("En az bir post dönmeli", postCount > 0);
         
