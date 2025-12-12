@@ -1,0 +1,3 @@
+com\test\restassured\ApiTestSuite.class
+com\test\restassured\PostRequestTest.class
+com\test\restassured\GetRequestTest.class
