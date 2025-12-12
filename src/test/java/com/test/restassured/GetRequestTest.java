@@ -52,15 +52,15 @@ public class GetRequestTest {
                 // Response time kontrolü (milisaniye cinsinden)
                 .time(lessThan(MAX_RESPONSE_TIME))
                 // Response body kontrolleri
-                .body("$", is(notNullValue())) // Response boş olmamalı
-                .body("size()", greaterThan(0)) // En az bir eleman olmalı
-                .body("[0].id", is(notNullValue())) // İlk elemanın id'si olmalı
-                .body("[0].title", is(notNullValue())) // İlk elemanın title'ı olmalı
-                .body("[0].userId", is(notNullValue())) // İlk elemanın userId'si olmalı
+                .body("$", is(notNullValue())) 
+                .body("size()", greaterThan(0)) 
+                .body("[0].id", is(notNullValue())) 
+                .body("[0].title", is(notNullValue())) 
+                .body("[0].userId", is(notNullValue())) 
                 .extract()
                 .response();
 
-        // Ek kontroller
+        
         assertNotNull("Response boş olamaz", response);
         assertEquals("Content-Type JSON olmalı", 
                 "application/json; charset=utf-8", 
@@ -95,12 +95,12 @@ public class GetRequestTest {
 
                 .time(lessThan(MAX_RESPONSE_TIME))
                 // body kontrolleri
-                .body("id", equalTo(postId)) // ID eşleşmeli
-                .body("userId", is(notNullValue())) // userId olmalı
-                .body("title", is(notNullValue())) // title olmalı
-                .body("body", is(notNullValue())) // body olmalı
-                .body("title", not(emptyString())) // title boş olmamalı
-                .body("body", not(emptyString())) // body boş olmamalı
+                .body("id", equalTo(postId)) 
+                .body("userId", is(notNullValue())) 
+                .body("title", is(notNullValue())) 
+                .body("body", is(notNullValue())) 
+                .body("title", not(emptyString())) 
+                .body("body", not(emptyString())) 
                 .extract()
                 .response();
 
@@ -139,9 +139,9 @@ public class GetRequestTest {
                 
                 .time(lessThan(MAX_RESPONSE_TIME))
             
-                .body("$", is(notNullValue())) // Response boş olmamalı
-                .body("size()", greaterThan(0)) // En az bir post olmalı
-                .body("userId", everyItem(equalTo(userId))) // Tüm postların userId'si eşleşmeli
+                .body("$", is(notNullValue())) 
+                .body("size()", greaterThan(0)) 
+                .body("userId", everyItem(equalTo(userId))) 
                 .extract()
                 .response();
 
